@@ -19,17 +19,23 @@ def dfs(graph, source):
   '''
   # define stack
   s = [source]
+
+  # Adding visited to avoid infine loop in cyclic graph
+  visited = set()
+  
   while s != []:
     current = s.pop()
     print(current)
+    visited.add(current)
   
     # Add all nodes connect to above node in stack
     for n in graph[current]:
-      s.append(n)
+      if n not in visited: # checking for cyclic graph
+        s.append(n)
 
 # Traversing graph using recurrsion
 
-def dfs_recur(graph, source): # Time = O(edges), Space = O(Vertex)
+def dfs_recur(graph, source, visited=set()): # Time = O(edges), Space = O(Vertex)
   ''' 
   Time = O(edges), Space = O(Vertex)
   
@@ -37,13 +43,17 @@ def dfs_recur(graph, source): # Time = O(edges), Space = O(Vertex)
     graph : 
             {
                 "a" : ["b", "c"],
-                "b" : ["d"]
+                "b" : ["d"],
+                "d" : ["a"}
             }
     source : A graph Node
   Output : None
     Prints value of each node
   '''
-  
-  print(source)
+  if source not in visited:
+    print(source)
+    visited.add(source)
+    
   for i in graph[source]:
-    dfs_recur(graph, i)
+    if i not in visited:
+      dfs_recur(graph, i, visited)

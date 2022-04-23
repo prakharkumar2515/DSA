@@ -20,12 +20,15 @@ def bfs(graph, source):
   
   # define queue
   q = collections.deque()
+  visited = set()
   q.append(source)
   
   while q:
     current = q.popleft()
     print(q)
+    visited.add(current)
     
     # Add all braches of current node to Queue
     for neigh in graph[current]:
-      q.append(neigh)
+      if neigh not in visited:
+        q.append(neigh)

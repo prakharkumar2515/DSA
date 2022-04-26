@@ -1,0 +1,39 @@
+  def maximumNumberOfOnes(width, height, sideLength, maxOnes):
+
+      count_on_width = (width // sideLength) # identify full submatrix in width
+      rem_width_end = width % sideLength # identify remaining cells in width
+      
+      count_on_height = (height // sideLength) # identify full submatrix in height
+      rem_height_end = height % sideLength # identify remaining cells in bottom
+      
+      count = count_on_width * count_on_height  * maxOnes # total number of ones in full sub matrix
+      
+      # Find frequency at width end
+      freq_w = [0 for i in range(sideLength*sideLength)]
+      st = 0
+      while st < sideLength*sideLength:
+          for i in range(st,st+rem_width_end):
+              freq_w[i] += 1
+          st += sideLength
+      freq_w = [i * count_on_height for i in freq_w]
+      
+      # Find frequency at height end
+      freq_h = [0 for i in range(sideLength*sideLength)]
+      for i in range(rem_height_end * sideLength):
+          freq_h[i] += 1
+      freq_h = [i * count_on_width for i in  freq_h]
+      
+      # adding cell freq 
+      freq = [freq_w[i] + freq_h[i] for i in range(sideLength*sideLength)]
+      
+      # Identifying freq at right bottom
+      for j in range(rem_height_end):
+          st = j * sideLength
+          for i in range(st, st+rem_width_end):
+              freq[i] += 1
+
+      sort_freq = sorted(freq, reverse=True)
+      # based on number of ones, we find which freq to choose
+      for i in range(maxOnes):
+          count += sort_freq[i]
+      return count

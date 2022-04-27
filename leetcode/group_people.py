@@ -31,4 +31,27 @@ def groupThePeople(groupSizes: List[int]) -> List[List[int]]:
             create_and_add_in_group(v, i)
     out = [i[0] for i in record]
     return out
+
+# Faster Soln -----------------------------------------------
+
+def groupThePeople(groupSizes: List[int]) -> List[List[int]]:
+
+    record = defaultdict(list)
+    for i,v in enumerate(groupSizes):
+        record[v].append(i)
+    print(record)
+    out = []
+    for i in record.keys():
+        count = 0
+        temp = []
+        for j in record[i]:
+            if count != i:
+                temp.append(j)
+                count += 1
+            else:
+                out.append(temp)
+                temp = [j]
+                count = 1
+        out.append(temp)
+    return out
                   
